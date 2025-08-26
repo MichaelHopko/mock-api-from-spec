@@ -1,0 +1,1288 @@
+{
+  "timestamp": "2025-08-26T11:43:12.749963",
+  "tasks": [
+    {
+      "id": "task_0",
+      "type": "TaskType.CREATE_STATE_MANAGER",
+      "prompt": "Enhance the state manager in state/manager.py to handle these specific objects and relationships:\n\nObjects to manage:\n{\n  \"User\": {\n    \"object_name\": \"User\",\n    \"create_endpoints\": [\n      \"POST /users\"\n    ],\n    \"read_endpoints\": [\n      \"GET /users\",\n      \"POST /users\",\n      \"GET /users/{userId}\",\n      \"GET /users/{userId}/documents\"\n    ],\n    \"update_endpoints\": [],\n    \"delete_endpoints\": [\n      \"DELETE /users/{userId}\"\n    ],\n    \"state_transitions\": {},\n    \"id_field\": \"id\",\n    \"soft_delete\": false\n  },\n  \"CreateUser\": {\n    \"object_name\": \"CreateUser\",\n    \"create_endpoints\": [\n      \"POST /users\"\n    ],\n    \"read_endpoints\": [],\n    \"update_endpoints\": [],\n    \"delete_endpoints\": [],\n    \"state_transitions\": {},\n    \"id_field\": \"id\",\n    \"soft_delete\": false\n  },\n  \"Document\": {\n    \"object_name\": \"Document\",\n    \"create_endpoints\": [\n      \"POST /documents\"\n    ],\n    \"read_endpoints\": [\n      \"GET /users/{userId}/documents\",\n      \"POST /documents\"\n    ],\n    \"update_endpoints\": [],\n    \"delete_endpoints\": [],\n    \"state_transitions\": {},\n    \"id_field\": \"id\",\n    \"soft_delete\": false\n  },\n  \"CreateDocument\": {\n    \"object_name\": \"CreateDocument\",\n    \"create_endpoints\": [\n      \"POST /documents\"\n    ],\n    \"read_endpoints\": [],\n    \"update_endpoints\": [],\n    \"delete_endpoints\": [],\n    \"state_transitions\": {},\n    \"id_field\": \"id\",\n    \"soft_delete\": false\n  }\n}\n\nRelationships:\n[\n  {\n    \"from_object\": \"Document\",\n    \"to_object\": \"User\",\n    \"relationship_type\": \"many-to-one\",\n    \"field_name\": \"userId\",\n    \"cascade_delete\": false,\n    \"nullable\": false\n  },\n  {\n    \"from_object\": \"CreateDocument\",\n    \"to_object\": \"User\",\n    \"relationship_type\": \"many-to-one\",\n    \"field_name\": \"userId\",\n    \"cascade_delete\": false,\n    \"nullable\": false\n  }\n]\n\nRequirements:\n1. Implement proper cascade delete logic based on relationships\n2. Add relationship validation (e.g., foreign key constraints)\n3. Implement state transitions for objects with status fields\n4. Add event triggers for side effects\n5. Include transaction support for atomic operations\n6. Add query methods for relationship traversal (e.g., get all documents for a user)\n7. Implement soft delete where appropriate\n8. Add audit logging for all state changes",
+      "dependencies": [],
+      "context": {
+        "lifecycles": {
+          "User": {
+            "object_name": "User",
+            "create_endpoints": [
+              "POST /users"
+            ],
+            "read_endpoints": [
+              "GET /users",
+              "POST /users",
+              "GET /users/{userId}",
+              "GET /users/{userId}/documents"
+            ],
+            "update_endpoints": [],
+            "delete_endpoints": [
+              "DELETE /users/{userId}"
+            ],
+            "state_transitions": {},
+            "id_field": "id",
+            "soft_delete": false
+          },
+          "CreateUser": {
+            "object_name": "CreateUser",
+            "create_endpoints": [
+              "POST /users"
+            ],
+            "read_endpoints": [],
+            "update_endpoints": [],
+            "delete_endpoints": [],
+            "state_transitions": {},
+            "id_field": "id",
+            "soft_delete": false
+          },
+          "Document": {
+            "object_name": "Document",
+            "create_endpoints": [
+              "POST /documents"
+            ],
+            "read_endpoints": [
+              "GET /users/{userId}/documents",
+              "POST /documents"
+            ],
+            "update_endpoints": [],
+            "delete_endpoints": [],
+            "state_transitions": {},
+            "id_field": "id",
+            "soft_delete": false
+          },
+          "CreateDocument": {
+            "object_name": "CreateDocument",
+            "create_endpoints": [
+              "POST /documents"
+            ],
+            "read_endpoints": [],
+            "update_endpoints": [],
+            "delete_endpoints": [],
+            "state_transitions": {},
+            "id_field": "id",
+            "soft_delete": false
+          }
+        },
+        "relationships": [
+          {
+            "from_object": "Document",
+            "to_object": "User",
+            "relationship_type": "many-to-one",
+            "field_name": "userId",
+            "cascade_delete": false,
+            "nullable": false
+          },
+          {
+            "from_object": "CreateDocument",
+            "to_object": "User",
+            "relationship_type": "many-to-one",
+            "field_name": "userId",
+            "cascade_delete": false,
+            "nullable": false
+          }
+        ]
+      },
+      "status": "TaskStatus.COMPLETED",
+      "result": "Test mode: Successfully processed prompt for Enhance",
+      "error": null,
+      "attempts": 1,
+      "max_attempts": 3
+    },
+    {
+      "id": "task_1",
+      "type": "TaskType.CREATE_MODELS",
+      "prompt": "Create a stateful model for 'User' in models/user.py.\n\nModel specification: {\n  \"type\": \"object\",\n  \"required\": [\n    \"id\",\n    \"name\",\n    \"email\"\n  ],\n  \"properties\": {\n    \"id\": {\n      \"type\": \"string\",\n      \"format\": \"uuid\"\n    },\n    \"name\": {\n      \"type\": \"string\"\n    },\n    \"email\": {\n      \"type\": \"string\",\n      \"format\": \"email\"\n    },\n    \"status\": {\n      \"type\": \"string\",\n      \"enum\": [\n        \"active\",\n        \"inactive\",\n        \"suspended\"\n      ],\n      \"default\": \"active\"\n    },\n    \"createdAt\": {\n      \"type\": \"string\",\n      \"format\": \"date-time\"\n    }\n  },\n  \"lifecycle\": {\n    \"object_name\": \"User\",\n    \"create_endpoints\": [\n      \"POST /users\"\n    ],\n    \"read_endpoints\": [\n      \"GET /users\",\n      \"POST /users\",\n      \"GET /users/{userId}\",\n      \"GET /users/{userId}/documents\"\n    ],\n    \"update_endpoints\": [],\n    \"delete_endpoints\": [\n      \"DELETE /users/{userId}\"\n    ],\n    \"state_transitions\": {},\n    \"id_field\": \"id\",\n    \"soft_delete\": false\n  }\n}\nLifecycle: {\n  \"object_name\": \"User\",\n  \"create_endpoints\": [\n    \"POST /users\"\n  ],\n  \"read_endpoints\": [\n    \"GET /users\",\n    \"POST /users\",\n    \"GET /users/{userId}\",\n    \"GET /users/{userId}/documents\"\n  ],\n  \"update_endpoints\": [],\n  \"delete_endpoints\": [\n    \"DELETE /users/{userId}\"\n  ],\n  \"state_transitions\": {},\n  \"id_field\": \"id\",\n  \"soft_delete\": false\n}\nRelationships: [\n  {\n    \"from_object\": \"Document\",\n    \"to_object\": \"User\",\n    \"relationship_type\": \"many-to-one\",\n    \"field_name\": \"userId\",\n    \"cascade_delete\": false,\n    \"nullable\": false\n  },\n  {\n    \"from_object\": \"CreateDocument\",\n    \"to_object\": \"User\",\n    \"relationship_type\": \"many-to-one\",\n    \"field_name\": \"userId\",\n    \"cascade_delete\": false,\n    \"nullable\": false\n  }\n]\n\nRequirements:\n1. Create SQLAlchemy model with proper columns and types\n2. Include relationship definitions for foreign keys\n3. Add validation methods that check business rules\n4. Include state transition methods if object has status\n5. Add to_dict() and from_dict() serialization methods\n6. Include mock data generation that respects relationships\n7. Add lifecycle hooks (before_create, after_update, before_delete, etc.)\n8. Include query helpers for common access patterns",
+      "dependencies": [
+        "task_0"
+      ],
+      "context": {
+        "component": {
+          "name": "User",
+          "type": "model",
+          "spec": {
+            "type": "object",
+            "required": [
+              "id",
+              "name",
+              "email"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "name": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string",
+                "format": "email"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "active",
+                  "inactive",
+                  "suspended"
+                ],
+                "default": "active"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "lifecycle": {
+              "object_name": "User",
+              "create_endpoints": [
+                "POST /users"
+              ],
+              "read_endpoints": [
+                "GET /users",
+                "POST /users",
+                "GET /users/{userId}",
+                "GET /users/{userId}/documents"
+              ],
+              "update_endpoints": [],
+              "delete_endpoints": [
+                "DELETE /users/{userId}"
+              ],
+              "state_transitions": {},
+              "id_field": "id",
+              "soft_delete": false
+            }
+          },
+          "dependencies": [],
+          "operations": [],
+          "relationships": [
+            {
+              "from_object": "Document",
+              "to_object": "User",
+              "relationship_type": "many-to-one",
+              "field_name": "userId",
+              "cascade_delete": false,
+              "nullable": false
+            },
+            {
+              "from_object": "CreateDocument",
+              "to_object": "User",
+              "relationship_type": "many-to-one",
+              "field_name": "userId",
+              "cascade_delete": false,
+              "nullable": false
+            }
+          ],
+          "generated": false,
+          "file_path": null
+        }
+      },
+      "status": "TaskStatus.COMPLETED",
+      "result": "Test mode: Successfully processed prompt for Create",
+      "error": null,
+      "attempts": 1,
+      "max_attempts": 3
+    },
+    {
+      "id": "task_2",
+      "type": "TaskType.CREATE_MODELS",
+      "prompt": "Create a stateful model for 'CreateUser' in models/createuser.py.\n\nModel specification: {\n  \"type\": \"object\",\n  \"required\": [\n    \"name\",\n    \"email\"\n  ],\n  \"properties\": {\n    \"name\": {\n      \"type\": \"string\"\n    },\n    \"email\": {\n      \"type\": \"string\",\n      \"format\": \"email\"\n    },\n    \"status\": {\n      \"type\": \"string\",\n      \"enum\": [\n        \"active\",\n        \"inactive\",\n        \"suspended\"\n      ],\n      \"default\": \"active\"\n    }\n  },\n  \"lifecycle\": {\n    \"object_name\": \"CreateUser\",\n    \"create_endpoints\": [\n      \"POST /users\"\n    ],\n    \"read_endpoints\": [],\n    \"update_endpoints\": [],\n    \"delete_endpoints\": [],\n    \"state_transitions\": {},\n    \"id_field\": \"id\",\n    \"soft_delete\": false\n  }\n}\nLifecycle: {\n  \"object_name\": \"CreateUser\",\n  \"create_endpoints\": [\n    \"POST /users\"\n  ],\n  \"read_endpoints\": [],\n  \"update_endpoints\": [],\n  \"delete_endpoints\": [],\n  \"state_transitions\": {},\n  \"id_field\": \"id\",\n  \"soft_delete\": false\n}\nRelationships: []\n\nRequirements:\n1. Create SQLAlchemy model with proper columns and types\n2. Include relationship definitions for foreign keys\n3. Add validation methods that check business rules\n4. Include state transition methods if object has status\n5. Add to_dict() and from_dict() serialization methods\n6. Include mock data generation that respects relationships\n7. Add lifecycle hooks (before_create, after_update, before_delete, etc.)\n8. Include query helpers for common access patterns",
+      "dependencies": [
+        "task_0"
+      ],
+      "context": {
+        "component": {
+          "name": "CreateUser",
+          "type": "model",
+          "spec": {
+            "type": "object",
+            "required": [
+              "name",
+              "email"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string",
+                "format": "email"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "active",
+                  "inactive",
+                  "suspended"
+                ],
+                "default": "active"
+              }
+            },
+            "lifecycle": {
+              "object_name": "CreateUser",
+              "create_endpoints": [
+                "POST /users"
+              ],
+              "read_endpoints": [],
+              "update_endpoints": [],
+              "delete_endpoints": [],
+              "state_transitions": {},
+              "id_field": "id",
+              "soft_delete": false
+            }
+          },
+          "dependencies": [],
+          "operations": [],
+          "relationships": [],
+          "generated": false,
+          "file_path": null
+        }
+      },
+      "status": "TaskStatus.COMPLETED",
+      "result": "Test mode: Successfully processed prompt for Create",
+      "error": null,
+      "attempts": 1,
+      "max_attempts": 3
+    },
+    {
+      "id": "task_3",
+      "type": "TaskType.CREATE_MODELS",
+      "prompt": "Create a stateful model for 'Document' in models/document.py.\n\nModel specification: {\n  \"type\": \"object\",\n  \"required\": [\n    \"id\",\n    \"title\",\n    \"userId\"\n  ],\n  \"properties\": {\n    \"id\": {\n      \"type\": \"string\",\n      \"format\": \"uuid\"\n    },\n    \"title\": {\n      \"type\": \"string\"\n    },\n    \"content\": {\n      \"type\": \"string\"\n    },\n    \"userId\": {\n      \"type\": \"string\",\n      \"format\": \"uuid\"\n    },\n    \"status\": {\n      \"type\": \"string\",\n      \"enum\": [\n        \"draft\",\n        \"published\",\n        \"archived\"\n      ],\n      \"default\": \"draft\"\n    },\n    \"createdAt\": {\n      \"type\": \"string\",\n      \"format\": \"date-time\"\n    },\n    \"updatedAt\": {\n      \"type\": \"string\",\n      \"format\": \"date-time\"\n    }\n  },\n  \"lifecycle\": {\n    \"object_name\": \"Document\",\n    \"create_endpoints\": [\n      \"POST /documents\"\n    ],\n    \"read_endpoints\": [\n      \"GET /users/{userId}/documents\",\n      \"POST /documents\"\n    ],\n    \"update_endpoints\": [],\n    \"delete_endpoints\": [],\n    \"state_transitions\": {},\n    \"id_field\": \"id\",\n    \"soft_delete\": false\n  }\n}\nLifecycle: {\n  \"object_name\": \"Document\",\n  \"create_endpoints\": [\n    \"POST /documents\"\n  ],\n  \"read_endpoints\": [\n    \"GET /users/{userId}/documents\",\n    \"POST /documents\"\n  ],\n  \"update_endpoints\": [],\n  \"delete_endpoints\": [],\n  \"state_transitions\": {},\n  \"id_field\": \"id\",\n  \"soft_delete\": false\n}\nRelationships: [\n  {\n    \"from_object\": \"Document\",\n    \"to_object\": \"User\",\n    \"relationship_type\": \"many-to-one\",\n    \"field_name\": \"userId\",\n    \"cascade_delete\": false,\n    \"nullable\": false\n  }\n]\n\nRequirements:\n1. Create SQLAlchemy model with proper columns and types\n2. Include relationship definitions for foreign keys\n3. Add validation methods that check business rules\n4. Include state transition methods if object has status\n5. Add to_dict() and from_dict() serialization methods\n6. Include mock data generation that respects relationships\n7. Add lifecycle hooks (before_create, after_update, before_delete, etc.)\n8. Include query helpers for common access patterns",
+      "dependencies": [
+        "task_0"
+      ],
+      "context": {
+        "component": {
+          "name": "Document",
+          "type": "model",
+          "spec": {
+            "type": "object",
+            "required": [
+              "id",
+              "title",
+              "userId"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "title": {
+                "type": "string"
+              },
+              "content": {
+                "type": "string"
+              },
+              "userId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "draft",
+                  "published",
+                  "archived"
+                ],
+                "default": "draft"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "lifecycle": {
+              "object_name": "Document",
+              "create_endpoints": [
+                "POST /documents"
+              ],
+              "read_endpoints": [
+                "GET /users/{userId}/documents",
+                "POST /documents"
+              ],
+              "update_endpoints": [],
+              "delete_endpoints": [],
+              "state_transitions": {},
+              "id_field": "id",
+              "soft_delete": false
+            }
+          },
+          "dependencies": [],
+          "operations": [],
+          "relationships": [
+            {
+              "from_object": "Document",
+              "to_object": "User",
+              "relationship_type": "many-to-one",
+              "field_name": "userId",
+              "cascade_delete": false,
+              "nullable": false
+            }
+          ],
+          "generated": false,
+          "file_path": null
+        }
+      },
+      "status": "TaskStatus.COMPLETED",
+      "result": "Test mode: Successfully processed prompt for Create",
+      "error": null,
+      "attempts": 1,
+      "max_attempts": 3
+    },
+    {
+      "id": "task_4",
+      "type": "TaskType.CREATE_MODELS",
+      "prompt": "Create a stateful model for 'CreateDocument' in models/createdocument.py.\n\nModel specification: {\n  \"type\": \"object\",\n  \"required\": [\n    \"title\",\n    \"userId\"\n  ],\n  \"properties\": {\n    \"title\": {\n      \"type\": \"string\"\n    },\n    \"content\": {\n      \"type\": \"string\"\n    },\n    \"userId\": {\n      \"type\": \"string\",\n      \"format\": \"uuid\"\n    },\n    \"status\": {\n      \"type\": \"string\",\n      \"enum\": [\n        \"draft\",\n        \"published\",\n        \"archived\"\n      ],\n      \"default\": \"draft\"\n    }\n  },\n  \"lifecycle\": {\n    \"object_name\": \"CreateDocument\",\n    \"create_endpoints\": [\n      \"POST /documents\"\n    ],\n    \"read_endpoints\": [],\n    \"update_endpoints\": [],\n    \"delete_endpoints\": [],\n    \"state_transitions\": {},\n    \"id_field\": \"id\",\n    \"soft_delete\": false\n  }\n}\nLifecycle: {\n  \"object_name\": \"CreateDocument\",\n  \"create_endpoints\": [\n    \"POST /documents\"\n  ],\n  \"read_endpoints\": [],\n  \"update_endpoints\": [],\n  \"delete_endpoints\": [],\n  \"state_transitions\": {},\n  \"id_field\": \"id\",\n  \"soft_delete\": false\n}\nRelationships: [\n  {\n    \"from_object\": \"CreateDocument\",\n    \"to_object\": \"User\",\n    \"relationship_type\": \"many-to-one\",\n    \"field_name\": \"userId\",\n    \"cascade_delete\": false,\n    \"nullable\": false\n  }\n]\n\nRequirements:\n1. Create SQLAlchemy model with proper columns and types\n2. Include relationship definitions for foreign keys\n3. Add validation methods that check business rules\n4. Include state transition methods if object has status\n5. Add to_dict() and from_dict() serialization methods\n6. Include mock data generation that respects relationships\n7. Add lifecycle hooks (before_create, after_update, before_delete, etc.)\n8. Include query helpers for common access patterns",
+      "dependencies": [
+        "task_0"
+      ],
+      "context": {
+        "component": {
+          "name": "CreateDocument",
+          "type": "model",
+          "spec": {
+            "type": "object",
+            "required": [
+              "title",
+              "userId"
+            ],
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "content": {
+                "type": "string"
+              },
+              "userId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "draft",
+                  "published",
+                  "archived"
+                ],
+                "default": "draft"
+              }
+            },
+            "lifecycle": {
+              "object_name": "CreateDocument",
+              "create_endpoints": [
+                "POST /documents"
+              ],
+              "read_endpoints": [],
+              "update_endpoints": [],
+              "delete_endpoints": [],
+              "state_transitions": {},
+              "id_field": "id",
+              "soft_delete": false
+            }
+          },
+          "dependencies": [],
+          "operations": [],
+          "relationships": [
+            {
+              "from_object": "CreateDocument",
+              "to_object": "User",
+              "relationship_type": "many-to-one",
+              "field_name": "userId",
+              "cascade_delete": false,
+              "nullable": false
+            }
+          ],
+          "generated": false,
+          "file_path": null
+        }
+      },
+      "status": "TaskStatus.COMPLETED",
+      "result": "Test mode: Successfully processed prompt for Create",
+      "error": null,
+      "attempts": 1,
+      "max_attempts": 3
+    },
+    {
+      "id": "task_5",
+      "type": "TaskType.CREATE_REPOSITORIES",
+      "prompt": "Create a repository layer in repositories/ directory:\n\n1. Create repositories/base.py with BaseRepository class that provides:\n   - Generic CRUD operations (create, read, update, delete)\n   - Query builder interface\n   - Pagination support\n   - Filtering and sorting\n   - Bulk operations\n   - Transaction management\n\n2. For each model, create a specific repository (e.g., repositories/user_repository.py) that:\n   - Extends BaseRepository\n   - Adds model-specific query methods\n   - Implements complex business logic queries\n   - Handles relationship loading (eager/lazy)\n   - Provides aggregation queries\n\n3. Create repositories/__init__.py that exports all repositories",
+      "dependencies": [
+        "task_1",
+        "task_2",
+        "task_3",
+        "task_4"
+      ],
+      "context": {
+        "models": [
+          "User",
+          "CreateUser",
+          "Document",
+          "CreateDocument"
+        ]
+      },
+      "status": "TaskStatus.COMPLETED",
+      "result": "Test mode: Successfully processed prompt for Create",
+      "error": null,
+      "attempts": 1,
+      "max_attempts": 3
+    },
+    {
+      "id": "task_6",
+      "type": "TaskType.CREATE_RELATIONSHIPS",
+      "prompt": "Create relationship management in state/relationships.py that handles:\n\nRelationships to implement:\n[\n  {\n    \"from_object\": \"Document\",\n    \"to_object\": \"User\",\n    \"relationship_type\": \"many-to-one\",\n    \"field_name\": \"userId\",\n    \"cascade_delete\": false,\n    \"nullable\": false\n  },\n  {\n    \"from_object\": \"CreateDocument\",\n    \"to_object\": \"User\",\n    \"relationship_type\": \"many-to-one\",\n    \"field_name\": \"userId\",\n    \"cascade_delete\": false,\n    \"nullable\": false\n  }\n]\n\nRequirements:\n1. Enforce referential integrity\n2. Handle cascade operations (delete, update)\n3. Implement bi-directional relationship updates\n4. Add methods to traverse relationships\n5. Include validation for relationship constraints\n6. Handle many-to-many relationships with junction tables\n7. Implement lazy vs eager loading strategies\n8. Add relationship-aware query builders",
+      "dependencies": [
+        "task_5"
+      ],
+      "context": {
+        "relationships": [
+          {
+            "from_object": "Document",
+            "to_object": "User",
+            "relationship_type": "many-to-one",
+            "field_name": "userId",
+            "cascade_delete": false,
+            "nullable": false
+          },
+          {
+            "from_object": "CreateDocument",
+            "to_object": "User",
+            "relationship_type": "many-to-one",
+            "field_name": "userId",
+            "cascade_delete": false,
+            "nullable": false
+          }
+        ]
+      },
+      "status": "TaskStatus.COMPLETED",
+      "result": "Test mode: Successfully processed prompt for Create",
+      "error": null,
+      "attempts": 1,
+      "max_attempts": 3
+    },
+    {
+      "id": "task_7",
+      "type": "TaskType.CREATE_ENDPOINTS",
+      "prompt": "Create a stateful endpoint for 'GET /users' in endpoints/get__users.py.\n\nEndpoint specification: {\n  \"summary\": \"List users\",\n  \"responses\": {\n    \"200\": {\n      \"description\": \"List of users\",\n      \"content\": {\n        \"application/json\": {\n          \"schema\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"$ref\": \"#/components/schemas/User\"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nOperations: [\n  {\n    \"endpoint\": \"/users\",\n    \"method\": \"GET\",\n    \"creates\": [],\n    \"reads\": [\n      \"User\"\n    ],\n    \"updates\": [],\n    \"deletes\": [],\n    \"requires\": [],\n    \"side_effects\": []\n  }\n]\n\nRequirements:\n1. Use the state manager (g.state) for all data operations\n2. Implement proper transaction handling\n3. Validate relationships before operations\n4. Handle cascade effects for deletes\n5. Trigger appropriate side effects\n6. Return proper status codes and error messages\n7. Include pagination for list endpoints\n8. Add filtering and sorting support\n9. Implement optimistic locking for updates\n10. Register the endpoint in app.py\n\nExample structure:\n```python\nfrom flask import g, request, jsonify\nfrom flask_restful import Resource\n\nclass GETusers(Resource):\n    def get(self, *args, **kwargs):\n        # Validate request\n        # Use g.state for operations\n        # Handle relationships\n        # Return appropriate response\n```",
+      "dependencies": [
+        "task_1",
+        "task_0"
+      ],
+      "context": {
+        "component": {
+          "name": "GET /users",
+          "type": "endpoint",
+          "spec": {
+            "summary": "List users",
+            "responses": {
+              "200": {
+                "description": "List of users",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/User"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "dependencies": [
+            "User"
+          ],
+          "operations": [
+            {
+              "endpoint": "/users",
+              "method": "GET",
+              "creates": [],
+              "reads": [
+                "User"
+              ],
+              "updates": [],
+              "deletes": [],
+              "requires": [],
+              "side_effects": []
+            }
+          ],
+          "relationships": [],
+          "generated": false,
+          "file_path": null
+        },
+        "operations": [
+          {
+            "endpoint": "/users",
+            "method": "GET",
+            "creates": [],
+            "reads": [
+              "User"
+            ],
+            "updates": [],
+            "deletes": [],
+            "requires": [],
+            "side_effects": []
+          }
+        ]
+      },
+      "status": "TaskStatus.COMPLETED",
+      "result": "Test mode: Successfully processed prompt for Create",
+      "error": null,
+      "attempts": 1,
+      "max_attempts": 3
+    },
+    {
+      "id": "task_8",
+      "type": "TaskType.CREATE_ENDPOINTS",
+      "prompt": "Create a stateful endpoint for 'POST /users' in endpoints/post__users.py.\n\nEndpoint specification: {\n  \"summary\": \"Create user\",\n  \"requestBody\": {\n    \"content\": {\n      \"application/json\": {\n        \"schema\": {\n          \"$ref\": \"#/components/schemas/CreateUser\"\n        }\n      }\n    }\n  },\n  \"responses\": {\n    \"201\": {\n      \"description\": \"User created\",\n      \"content\": {\n        \"application/json\": {\n          \"schema\": {\n            \"$ref\": \"#/components/schemas/User\"\n          }\n        }\n      }\n    }\n  }\n}\nOperations: [\n  {\n    \"endpoint\": \"/users\",\n    \"method\": \"POST\",\n    \"creates\": [\n      \"User\",\n      \"CreateUser\"\n    ],\n    \"reads\": [\n      \"User\"\n    ],\n    \"updates\": [],\n    \"deletes\": [],\n    \"requires\": [],\n    \"side_effects\": []\n  }\n]\n\nRequirements:\n1. Use the state manager (g.state) for all data operations\n2. Implement proper transaction handling\n3. Validate relationships before operations\n4. Handle cascade effects for deletes\n5. Trigger appropriate side effects\n6. Return proper status codes and error messages\n7. Include pagination for list endpoints\n8. Add filtering and sorting support\n9. Implement optimistic locking for updates\n10. Register the endpoint in app.py\n\nExample structure:\n```python\nfrom flask import g, request, jsonify\nfrom flask_restful import Resource\n\nclass POSTusers(Resource):\n    def post(self, *args, **kwargs):\n        # Validate request\n        # Use g.state for operations\n        # Handle relationships\n        # Return appropriate response\n```",
+      "dependencies": [
+        "task_2",
+        "task_1",
+        "task_0"
+      ],
+      "context": {
+        "component": {
+          "name": "POST /users",
+          "type": "endpoint",
+          "spec": {
+            "summary": "Create user",
+            "requestBody": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/CreateUser"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "201": {
+                "description": "User created",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "dependencies": [
+            "CreateUser",
+            "User"
+          ],
+          "operations": [
+            {
+              "endpoint": "/users",
+              "method": "POST",
+              "creates": [
+                "User",
+                "CreateUser"
+              ],
+              "reads": [
+                "User"
+              ],
+              "updates": [],
+              "deletes": [],
+              "requires": [],
+              "side_effects": []
+            }
+          ],
+          "relationships": [],
+          "generated": false,
+          "file_path": null
+        },
+        "operations": [
+          {
+            "endpoint": "/users",
+            "method": "POST",
+            "creates": [
+              "User",
+              "CreateUser"
+            ],
+            "reads": [
+              "User"
+            ],
+            "updates": [],
+            "deletes": [],
+            "requires": [],
+            "side_effects": []
+          }
+        ]
+      },
+      "status": "TaskStatus.COMPLETED",
+      "result": "Test mode: Successfully processed prompt for Create",
+      "error": null,
+      "attempts": 1,
+      "max_attempts": 3
+    },
+    {
+      "id": "task_9",
+      "type": "TaskType.CREATE_ENDPOINTS",
+      "prompt": "Create a stateful endpoint for 'GET /users/{userId}' in endpoints/get__users_{userid}.py.\n\nEndpoint specification: {\n  \"summary\": \"Get user by ID\",\n  \"parameters\": [\n    {\n      \"name\": \"userId\",\n      \"in\": \"path\",\n      \"required\": true,\n      \"schema\": {\n        \"type\": \"string\"\n      }\n    }\n  ],\n  \"responses\": {\n    \"200\": {\n      \"description\": \"User details\",\n      \"content\": {\n        \"application/json\": {\n          \"schema\": {\n            \"$ref\": \"#/components/schemas/User\"\n          }\n        }\n      }\n    }\n  }\n}\nOperations: [\n  {\n    \"endpoint\": \"/users/{userId}\",\n    \"method\": \"GET\",\n    \"creates\": [],\n    \"reads\": [\n      \"User\"\n    ],\n    \"updates\": [],\n    \"deletes\": [],\n    \"requires\": [],\n    \"side_effects\": []\n  }\n]\n\nRequirements:\n1. Use the state manager (g.state) for all data operations\n2. Implement proper transaction handling\n3. Validate relationships before operations\n4. Handle cascade effects for deletes\n5. Trigger appropriate side effects\n6. Return proper status codes and error messages\n7. Include pagination for list endpoints\n8. Add filtering and sorting support\n9. Implement optimistic locking for updates\n10. Register the endpoint in app.py\n\nExample structure:\n```python\nfrom flask import g, request, jsonify\nfrom flask_restful import Resource\n\nclass GETusers{userId}(Resource):\n    def get(self, *args, **kwargs):\n        # Validate request\n        # Use g.state for operations\n        # Handle relationships\n        # Return appropriate response\n```",
+      "dependencies": [
+        "task_1",
+        "task_0"
+      ],
+      "context": {
+        "component": {
+          "name": "GET /users/{userId}",
+          "type": "endpoint",
+          "spec": {
+            "summary": "Get user by ID",
+            "parameters": [
+              {
+                "name": "userId",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "User details",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "dependencies": [
+            "User"
+          ],
+          "operations": [
+            {
+              "endpoint": "/users/{userId}",
+              "method": "GET",
+              "creates": [],
+              "reads": [
+                "User"
+              ],
+              "updates": [],
+              "deletes": [],
+              "requires": [],
+              "side_effects": []
+            }
+          ],
+          "relationships": [],
+          "generated": false,
+          "file_path": null
+        },
+        "operations": [
+          {
+            "endpoint": "/users/{userId}",
+            "method": "GET",
+            "creates": [],
+            "reads": [
+              "User"
+            ],
+            "updates": [],
+            "deletes": [],
+            "requires": [],
+            "side_effects": []
+          }
+        ]
+      },
+      "status": "TaskStatus.COMPLETED",
+      "result": "Test mode: Successfully processed prompt for Create",
+      "error": null,
+      "attempts": 1,
+      "max_attempts": 3
+    },
+    {
+      "id": "task_10",
+      "type": "TaskType.CREATE_ENDPOINTS",
+      "prompt": "Create a stateful endpoint for 'DELETE /users/{userId}' in endpoints/delete__users_{userid}.py.\n\nEndpoint specification: {\n  \"summary\": \"Delete user\",\n  \"parameters\": [\n    {\n      \"name\": \"userId\",\n      \"in\": \"path\",\n      \"required\": true,\n      \"schema\": {\n        \"type\": \"string\"\n      }\n    }\n  ],\n  \"responses\": {\n    \"204\": {\n      \"description\": \"User deleted\"\n    }\n  }\n}\nOperations: [\n  {\n    \"endpoint\": \"/users/{userId}\",\n    \"method\": \"DELETE\",\n    \"creates\": [],\n    \"reads\": [],\n    \"updates\": [],\n    \"deletes\": [\n      \"User\"\n    ],\n    \"requires\": [\n      \"User\"\n    ],\n    \"side_effects\": []\n  }\n]\n\nRequirements:\n1. Use the state manager (g.state) for all data operations\n2. Implement proper transaction handling\n3. Validate relationships before operations\n4. Handle cascade effects for deletes\n5. Trigger appropriate side effects\n6. Return proper status codes and error messages\n7. Include pagination for list endpoints\n8. Add filtering and sorting support\n9. Implement optimistic locking for updates\n10. Register the endpoint in app.py\n\nExample structure:\n```python\nfrom flask import g, request, jsonify\nfrom flask_restful import Resource\n\nclass DELETEusers{userId}(Resource):\n    def delete(self, *args, **kwargs):\n        # Validate request\n        # Use g.state for operations\n        # Handle relationships\n        # Return appropriate response\n```",
+      "dependencies": [
+        "task_0"
+      ],
+      "context": {
+        "component": {
+          "name": "DELETE /users/{userId}",
+          "type": "endpoint",
+          "spec": {
+            "summary": "Delete user",
+            "parameters": [
+              {
+                "name": "userId",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "204": {
+                "description": "User deleted"
+              }
+            }
+          },
+          "dependencies": [],
+          "operations": [
+            {
+              "endpoint": "/users/{userId}",
+              "method": "DELETE",
+              "creates": [],
+              "reads": [],
+              "updates": [],
+              "deletes": [
+                "User"
+              ],
+              "requires": [
+                "User"
+              ],
+              "side_effects": []
+            }
+          ],
+          "relationships": [],
+          "generated": false,
+          "file_path": null
+        },
+        "operations": [
+          {
+            "endpoint": "/users/{userId}",
+            "method": "DELETE",
+            "creates": [],
+            "reads": [],
+            "updates": [],
+            "deletes": [
+              "User"
+            ],
+            "requires": [
+              "User"
+            ],
+            "side_effects": []
+          }
+        ]
+      },
+      "status": "TaskStatus.COMPLETED",
+      "result": "Test mode: Successfully processed prompt for Create",
+      "error": null,
+      "attempts": 1,
+      "max_attempts": 3
+    },
+    {
+      "id": "task_11",
+      "type": "TaskType.CREATE_ENDPOINTS",
+      "prompt": "Create a stateful endpoint for 'GET /users/{userId}/documents' in endpoints/get__users_{userid}_documents.py.\n\nEndpoint specification: {\n  \"summary\": \"Get user documents\",\n  \"parameters\": [\n    {\n      \"name\": \"userId\",\n      \"in\": \"path\",\n      \"required\": true,\n      \"schema\": {\n        \"type\": \"string\"\n      }\n    }\n  ],\n  \"responses\": {\n    \"200\": {\n      \"description\": \"User documents\",\n      \"content\": {\n        \"application/json\": {\n          \"schema\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"$ref\": \"#/components/schemas/Document\"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nOperations: [\n  {\n    \"endpoint\": \"/users/{userId}/documents\",\n    \"method\": \"GET\",\n    \"creates\": [],\n    \"reads\": [\n      \"User\",\n      \"Document\"\n    ],\n    \"updates\": [],\n    \"deletes\": [],\n    \"requires\": [],\n    \"side_effects\": []\n  }\n]\n\nRequirements:\n1. Use the state manager (g.state) for all data operations\n2. Implement proper transaction handling\n3. Validate relationships before operations\n4. Handle cascade effects for deletes\n5. Trigger appropriate side effects\n6. Return proper status codes and error messages\n7. Include pagination for list endpoints\n8. Add filtering and sorting support\n9. Implement optimistic locking for updates\n10. Register the endpoint in app.py\n\nExample structure:\n```python\nfrom flask import g, request, jsonify\nfrom flask_restful import Resource\n\nclass GETusers{userId}documents(Resource):\n    def get(self, *args, **kwargs):\n        # Validate request\n        # Use g.state for operations\n        # Handle relationships\n        # Return appropriate response\n```",
+      "dependencies": [
+        "task_3",
+        "task_0"
+      ],
+      "context": {
+        "component": {
+          "name": "GET /users/{userId}/documents",
+          "type": "endpoint",
+          "spec": {
+            "summary": "Get user documents",
+            "parameters": [
+              {
+                "name": "userId",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "User documents",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Document"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "dependencies": [
+            "Document"
+          ],
+          "operations": [
+            {
+              "endpoint": "/users/{userId}/documents",
+              "method": "GET",
+              "creates": [],
+              "reads": [
+                "User",
+                "Document"
+              ],
+              "updates": [],
+              "deletes": [],
+              "requires": [],
+              "side_effects": []
+            }
+          ],
+          "relationships": [],
+          "generated": false,
+          "file_path": null
+        },
+        "operations": [
+          {
+            "endpoint": "/users/{userId}/documents",
+            "method": "GET",
+            "creates": [],
+            "reads": [
+              "User",
+              "Document"
+            ],
+            "updates": [],
+            "deletes": [],
+            "requires": [],
+            "side_effects": []
+          }
+        ]
+      },
+      "status": "TaskStatus.COMPLETED",
+      "result": "Test mode: Successfully processed prompt for Create",
+      "error": null,
+      "attempts": 1,
+      "max_attempts": 3
+    },
+    {
+      "id": "task_12",
+      "type": "TaskType.CREATE_ENDPOINTS",
+      "prompt": "Create a stateful endpoint for 'POST /documents' in endpoints/post__documents.py.\n\nEndpoint specification: {\n  \"summary\": \"Create document\",\n  \"requestBody\": {\n    \"content\": {\n      \"application/json\": {\n        \"schema\": {\n          \"$ref\": \"#/components/schemas/CreateDocument\"\n        }\n      }\n    }\n  },\n  \"responses\": {\n    \"201\": {\n      \"description\": \"Document created\",\n      \"content\": {\n        \"application/json\": {\n          \"schema\": {\n            \"$ref\": \"#/components/schemas/Document\"\n          }\n        }\n      }\n    }\n  }\n}\nOperations: [\n  {\n    \"endpoint\": \"/documents\",\n    \"method\": \"POST\",\n    \"creates\": [\n      \"Document\",\n      \"CreateDocument\"\n    ],\n    \"reads\": [\n      \"Document\"\n    ],\n    \"updates\": [],\n    \"deletes\": [],\n    \"requires\": [],\n    \"side_effects\": []\n  }\n]\n\nRequirements:\n1. Use the state manager (g.state) for all data operations\n2. Implement proper transaction handling\n3. Validate relationships before operations\n4. Handle cascade effects for deletes\n5. Trigger appropriate side effects\n6. Return proper status codes and error messages\n7. Include pagination for list endpoints\n8. Add filtering and sorting support\n9. Implement optimistic locking for updates\n10. Register the endpoint in app.py\n\nExample structure:\n```python\nfrom flask import g, request, jsonify\nfrom flask_restful import Resource\n\nclass POSTdocuments(Resource):\n    def post(self, *args, **kwargs):\n        # Validate request\n        # Use g.state for operations\n        # Handle relationships\n        # Return appropriate response\n```",
+      "dependencies": [
+        "task_4",
+        "task_3",
+        "task_0"
+      ],
+      "context": {
+        "component": {
+          "name": "POST /documents",
+          "type": "endpoint",
+          "spec": {
+            "summary": "Create document",
+            "requestBody": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/CreateDocument"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "201": {
+                "description": "Document created",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/Document"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "dependencies": [
+            "CreateDocument",
+            "Document"
+          ],
+          "operations": [
+            {
+              "endpoint": "/documents",
+              "method": "POST",
+              "creates": [
+                "Document",
+                "CreateDocument"
+              ],
+              "reads": [
+                "Document"
+              ],
+              "updates": [],
+              "deletes": [],
+              "requires": [],
+              "side_effects": []
+            }
+          ],
+          "relationships": [],
+          "generated": false,
+          "file_path": null
+        },
+        "operations": [
+          {
+            "endpoint": "/documents",
+            "method": "POST",
+            "creates": [
+              "Document",
+              "CreateDocument"
+            ],
+            "reads": [
+              "Document"
+            ],
+            "updates": [],
+            "deletes": [],
+            "requires": [],
+            "side_effects": []
+          }
+        ]
+      },
+      "status": "TaskStatus.COMPLETED",
+      "result": "Test mode: Successfully processed prompt for Create",
+      "error": null,
+      "attempts": 1,
+      "max_attempts": 3
+    },
+    {
+      "id": "task_13",
+      "type": "TaskType.CREATE_LIFECYCLE",
+      "prompt": "Create lifecycle handlers in state/lifecycle.py for managing object state transitions:\n\nLifecycles to implement:\n{\n  \"User\": {\n    \"object_name\": \"User\",\n    \"create_endpoints\": [\n      \"POST /users\"\n    ],\n    \"read_endpoints\": [\n      \"GET /users\",\n      \"POST /users\",\n      \"GET /users/{userId}\",\n      \"GET /users/{userId}/documents\"\n    ],\n    \"update_endpoints\": [],\n    \"delete_endpoints\": [\n      \"DELETE /users/{userId}\"\n    ],\n    \"state_transitions\": {},\n    \"id_field\": \"id\",\n    \"soft_delete\": false\n  },\n  \"CreateUser\": {\n    \"object_name\": \"CreateUser\",\n    \"create_endpoints\": [\n      \"POST /users\"\n    ],\n    \"read_endpoints\": [],\n    \"update_endpoints\": [],\n    \"delete_endpoints\": [],\n    \"state_transitions\": {},\n    \"id_field\": \"id\",\n    \"soft_delete\": false\n  },\n  \"Document\": {\n    \"object_name\": \"Document\",\n    \"create_endpoints\": [\n      \"POST /documents\"\n    ],\n    \"read_endpoints\": [\n      \"GET /users/{userId}/documents\",\n      \"POST /documents\"\n    ],\n    \"update_endpoints\": [],\n    \"delete_endpoints\": [],\n    \"state_transitions\": {},\n    \"id_field\": \"id\",\n    \"soft_delete\": false\n  },\n  \"CreateDocument\": {\n    \"object_name\": \"CreateDocument\",\n    \"create_endpoints\": [\n      \"POST /documents\"\n    ],\n    \"read_endpoints\": [],\n    \"update_endpoints\": [],\n    \"delete_endpoints\": [],\n    \"state_transitions\": {},\n    \"id_field\": \"id\",\n    \"soft_delete\": false\n  }\n}\n\nRequirements:\n1. Implement state transition validation\n2. Create before/after hooks for each transition\n3. Add business rule enforcement\n4. Include audit trail for state changes\n5. Handle concurrent state modifications\n6. Implement state-specific behaviors\n7. Add query methods for objects in specific states\n8. Create state machine visualization helpers",
+      "dependencies": [
+        "task_7",
+        "task_8",
+        "task_9",
+        "task_10",
+        "task_11",
+        "task_12"
+      ],
+      "context": {
+        "lifecycles": {
+          "User": {
+            "object_name": "User",
+            "create_endpoints": [
+              "POST /users"
+            ],
+            "read_endpoints": [
+              "GET /users",
+              "POST /users",
+              "GET /users/{userId}",
+              "GET /users/{userId}/documents"
+            ],
+            "update_endpoints": [],
+            "delete_endpoints": [
+              "DELETE /users/{userId}"
+            ],
+            "state_transitions": {},
+            "id_field": "id",
+            "soft_delete": false
+          },
+          "CreateUser": {
+            "object_name": "CreateUser",
+            "create_endpoints": [
+              "POST /users"
+            ],
+            "read_endpoints": [],
+            "update_endpoints": [],
+            "delete_endpoints": [],
+            "state_transitions": {},
+            "id_field": "id",
+            "soft_delete": false
+          },
+          "Document": {
+            "object_name": "Document",
+            "create_endpoints": [
+              "POST /documents"
+            ],
+            "read_endpoints": [
+              "GET /users/{userId}/documents",
+              "POST /documents"
+            ],
+            "update_endpoints": [],
+            "delete_endpoints": [],
+            "state_transitions": {},
+            "id_field": "id",
+            "soft_delete": false
+          },
+          "CreateDocument": {
+            "object_name": "CreateDocument",
+            "create_endpoints": [
+              "POST /documents"
+            ],
+            "read_endpoints": [],
+            "update_endpoints": [],
+            "delete_endpoints": [],
+            "state_transitions": {},
+            "id_field": "id",
+            "soft_delete": false
+          }
+        }
+      },
+      "status": "TaskStatus.COMPLETED",
+      "result": "Test mode: Successfully processed prompt for Create",
+      "error": null,
+      "attempts": 1,
+      "max_attempts": 3
+    },
+    {
+      "id": "task_14",
+      "type": "TaskType.CREATE_VALIDATORS",
+      "prompt": "Create comprehensive validators in validators/validate.py that:\n        1. Validate schema compliance\n        2. Check relationship constraints\n        3. Enforce business rules\n        4. Validate state transitions\n        5. Check for circular dependencies\n        6. Validate bulk operations\n        7. Include custom validation decorators",
+      "dependencies": [
+        "task_1",
+        "task_2",
+        "task_3",
+        "task_4"
+      ],
+      "context": {
+        "models": [
+          "User",
+          "CreateUser",
+          "Document",
+          "CreateDocument"
+        ]
+      },
+      "status": "TaskStatus.COMPLETED",
+      "result": "Test mode: Successfully processed prompt for Create",
+      "error": null,
+      "attempts": 1,
+      "max_attempts": 3
+    },
+    {
+      "id": "task_15",
+      "type": "TaskType.CREATE_MOCK_DATA",
+      "prompt": "Create sophisticated mock data generators in data/generators.py that:\n\nModels to generate data for: [\n  \"User\",\n  \"CreateUser\",\n  \"Document\",\n  \"CreateDocument\"\n]\nRelationships to respect: [\n  {\n    \"from_object\": \"Document\",\n    \"to_object\": \"User\",\n    \"relationship_type\": \"many-to-one\",\n    \"field_name\": \"userId\",\n    \"cascade_delete\": false,\n    \"nullable\": false\n  },\n  {\n    \"from_object\": \"CreateDocument\",\n    \"to_object\": \"User\",\n    \"relationship_type\": \"many-to-one\",\n    \"field_name\": \"userId\",\n    \"cascade_delete\": false,\n    \"nullable\": false\n  }\n]\n\nRequirements:\n1. Generate realistic fake data using Faker\n2. Respect all relationship constraints\n3. Create connected data graphs (e.g., users with their documents)\n4. Support configurable data volumes\n5. Include edge cases (null values, empty arrays, etc.)\n6. Generate time-series data where appropriate\n7. Create deterministic test data for scenarios\n8. Support data generation profiles (minimal, normal, stress-test)\n9. Include methods to reset and reseed data\n\nExample:\n```python\ndef generate_connected_data(num_users=10, docs_per_user=5):\n    # Create users first\n    # Then create documents linked to users\n    # Respect all foreign key constraints\n```",
+      "dependencies": [
+        "task_1",
+        "task_2",
+        "task_3",
+        "task_4"
+      ],
+      "context": {
+        "models": [
+          "User",
+          "CreateUser",
+          "Document",
+          "CreateDocument"
+        ],
+        "relationships": [
+          {
+            "from_object": "Document",
+            "to_object": "User",
+            "relationship_type": "many-to-one",
+            "field_name": "userId",
+            "cascade_delete": false,
+            "nullable": false
+          },
+          {
+            "from_object": "CreateDocument",
+            "to_object": "User",
+            "relationship_type": "many-to-one",
+            "field_name": "userId",
+            "cascade_delete": false,
+            "nullable": false
+          }
+        ]
+      },
+      "status": "TaskStatus.COMPLETED",
+      "result": "Test mode: Successfully processed prompt for Create",
+      "error": null,
+      "attempts": 1,
+      "max_attempts": 3
+    },
+    {
+      "id": "task_16",
+      "type": "TaskType.CREATE_SCENARIOS",
+      "prompt": "Create comprehensive test scenarios in scenarios/ directory that simulate real usage:\n\nLifecycles: {\n  \"User\": {\n    \"object_name\": \"User\",\n    \"create_endpoints\": [\n      \"POST /users\"\n    ],\n    \"read_endpoints\": [\n      \"GET /users\",\n      \"POST /users\",\n      \"GET /users/{userId}\",\n      \"GET /users/{userId}/documents\"\n    ],\n    \"update_endpoints\": [],\n    \"delete_endpoints\": [\n      \"DELETE /users/{userId}\"\n    ],\n    \"state_transitions\": {},\n    \"id_field\": \"id\",\n    \"soft_delete\": false\n  },\n  \"CreateUser\": {\n    \"object_name\": \"CreateUser\",\n    \"create_endpoints\": [\n      \"POST /users\"\n    ],\n    \"read_endpoints\": [],\n    \"update_endpoints\": [],\n    \"delete_endpoints\": [],\n    \"state_transitions\": {},\n    \"id_field\": \"id\",\n    \"soft_delete\": false\n  },\n  \"Document\": {\n    \"object_name\": \"Document\",\n    \"create_endpoints\": [\n      \"POST /documents\"\n    ],\n    \"read_endpoints\": [\n      \"GET /users/{userId}/documents\",\n      \"POST /documents\"\n    ],\n    \"update_endpoints\": [],\n    \"delete_endpoints\": [],\n    \"state_transitions\": {},\n    \"id_field\": \"id\",\n    \"soft_delete\": false\n  },\n  \"CreateDocument\": {\n    \"object_name\": \"CreateDocument\",\n    \"create_endpoints\": [\n      \"POST /documents\"\n    ],\n    \"read_endpoints\": [],\n    \"update_endpoints\": [],\n    \"delete_endpoints\": [],\n    \"state_transitions\": {},\n    \"id_field\": \"id\",\n    \"soft_delete\": false\n  }\n}\nOperations: [\n  {\n    \"endpoint\": \"/users\",\n    \"method\": \"GET\",\n    \"creates\": [],\n    \"reads\": [\n      \"User\"\n    ],\n    \"updates\": [],\n    \"deletes\": [],\n    \"requires\": [],\n    \"side_effects\": []\n  },\n  {\n    \"endpoint\": \"/users\",\n    \"method\": \"POST\",\n    \"creates\": [\n      \"User\",\n      \"CreateUser\"\n    ],\n    \"reads\": [\n      \"User\"\n    ],\n    \"updates\": [],\n    \"deletes\": [],\n    \"requires\": [],\n    \"side_effects\": []\n  },\n  {\n    \"endpoint\": \"/users/{userId}\",\n    \"method\": \"GET\",\n    \"creates\": [],\n    \"reads\": [\n      \"User\"\n    ],\n    \"updates\": [],\n    \"deletes\": [],\n    \"requires\": [],\n    \"side_effects\": []\n  },\n  {\n    \"endpoint\": \"/users/{userId}\",\n    \"method\": \"DELETE\",\n    \"creates\": [],\n    \"reads\": [],\n    \"updates\": [],\n    \"deletes\": [\n      \"User\"\n    ],\n    \"requires\": [\n      \"User\"\n    ],\n    \"side_effects\": []\n  },\n  {\n    \"endpoint\": \"/users/{userId}/documents\",\n    \"method\": \"GET\",\n    \"creates\": [],\n    \"reads\": [\n      \"User\",\n      \"Document\"\n    ],\n    \"updates\": [],\n    \"deletes\": [],\n    \"requires\": [],\n    \"side_effects\": []\n  },\n  {\n    \"endpoint\": \"/documents\",\n    \"method\": \"POST\",\n    \"creates\": [\n      \"Document\",\n      \"CreateDocument\"\n    ],\n    \"reads\": [\n      \"Document\"\n    ],\n    \"updates\": [],\n    \"deletes\": [],\n    \"requires\": [],\n    \"side_effects\": []\n  }\n]\n\nCreate these scenario files:\n1. scenarios/basic_crud.py - Test all CRUD operations with state persistence\n2. scenarios/relationships.py - Test relationship integrity and cascades\n3. scenarios/concurrent.py - Test concurrent modifications\n4. scenarios/lifecycle.py - Test complete object lifecycles\n5. scenarios/edge_cases.py - Test error conditions and edge cases\n\nEach scenario should:\n- Set up initial state\n- Execute a series of operations\n- Verify state consistency\n- Test side effects\n- Clean up after completion\n\nExample scenario:\n```python\ndef test_document_lifecycle():\n    # Create user\n    user = create_user({\"name\": \"Test User\"})\n    \n    # Create document for user\n    doc = create_document({\"title\": \"Test\", \"userId\": user[\"id\"]})\n    \n    # Verify relationship\n    user_docs = get_user_documents(user[\"id\"])\n    assert doc[\"id\"] in [d[\"id\"] for d in user_docs]\n    \n    # Delete user and verify cascade\n    delete_user(user[\"id\"])\n    assert get_document(doc[\"id\"]) is None\n```",
+      "dependencies": [
+        "task_7",
+        "task_8",
+        "task_9",
+        "task_10",
+        "task_11",
+        "task_12"
+      ],
+      "context": {
+        "lifecycles": {
+          "User": {
+            "object_name": "User",
+            "create_endpoints": [
+              "POST /users"
+            ],
+            "read_endpoints": [
+              "GET /users",
+              "POST /users",
+              "GET /users/{userId}",
+              "GET /users/{userId}/documents"
+            ],
+            "update_endpoints": [],
+            "delete_endpoints": [
+              "DELETE /users/{userId}"
+            ],
+            "state_transitions": {},
+            "id_field": "id",
+            "soft_delete": false
+          },
+          "CreateUser": {
+            "object_name": "CreateUser",
+            "create_endpoints": [
+              "POST /users"
+            ],
+            "read_endpoints": [],
+            "update_endpoints": [],
+            "delete_endpoints": [],
+            "state_transitions": {},
+            "id_field": "id",
+            "soft_delete": false
+          },
+          "Document": {
+            "object_name": "Document",
+            "create_endpoints": [
+              "POST /documents"
+            ],
+            "read_endpoints": [
+              "GET /users/{userId}/documents",
+              "POST /documents"
+            ],
+            "update_endpoints": [],
+            "delete_endpoints": [],
+            "state_transitions": {},
+            "id_field": "id",
+            "soft_delete": false
+          },
+          "CreateDocument": {
+            "object_name": "CreateDocument",
+            "create_endpoints": [
+              "POST /documents"
+            ],
+            "read_endpoints": [],
+            "update_endpoints": [],
+            "delete_endpoints": [],
+            "state_transitions": {},
+            "id_field": "id",
+            "soft_delete": false
+          }
+        },
+        "operations": [
+          {
+            "endpoint": "/users",
+            "method": "GET",
+            "creates": [],
+            "reads": [
+              "User"
+            ],
+            "updates": [],
+            "deletes": [],
+            "requires": [],
+            "side_effects": []
+          },
+          {
+            "endpoint": "/users",
+            "method": "POST",
+            "creates": [
+              "User",
+              "CreateUser"
+            ],
+            "reads": [
+              "User"
+            ],
+            "updates": [],
+            "deletes": [],
+            "requires": [],
+            "side_effects": []
+          },
+          {
+            "endpoint": "/users/{userId}",
+            "method": "GET",
+            "creates": [],
+            "reads": [
+              "User"
+            ],
+            "updates": [],
+            "deletes": [],
+            "requires": [],
+            "side_effects": []
+          },
+          {
+            "endpoint": "/users/{userId}",
+            "method": "DELETE",
+            "creates": [],
+            "reads": [],
+            "updates": [],
+            "deletes": [
+              "User"
+            ],
+            "requires": [
+              "User"
+            ],
+            "side_effects": []
+          },
+          {
+            "endpoint": "/users/{userId}/documents",
+            "method": "GET",
+            "creates": [],
+            "reads": [
+              "User",
+              "Document"
+            ],
+            "updates": [],
+            "deletes": [],
+            "requires": [],
+            "side_effects": []
+          },
+          {
+            "endpoint": "/documents",
+            "method": "POST",
+            "creates": [
+              "Document",
+              "CreateDocument"
+            ],
+            "reads": [
+              "Document"
+            ],
+            "updates": [],
+            "deletes": [],
+            "requires": [],
+            "side_effects": []
+          }
+        ]
+      },
+      "status": "TaskStatus.COMPLETED",
+      "result": "Test mode: Successfully processed prompt for Create",
+      "error": null,
+      "attempts": 1,
+      "max_attempts": 3
+    },
+    {
+      "id": "task_17",
+      "type": "TaskType.CREATE_TESTS",
+      "prompt": "Create comprehensive stateful tests in tests/ directory:\n\nEndpoints to test: [\n  \"GET /users\",\n  \"POST /users\",\n  \"GET /users/{userId}\",\n  \"DELETE /users/{userId}\",\n  \"GET /users/{userId}/documents\",\n  \"POST /documents\"\n]\n\nTest files to create:\n1. tests/test_state_persistence.py - Verify state persists across requests\n2. tests/test_relationships.py - Test all relationship operations\n3. tests/test_transactions.py - Test transaction rollback on errors\n4. tests/test_concurrency.py - Test race conditions and locks\n5. tests/test_lifecycle.py - Test complete object lifecycles\n6. tests/test_side_effects.py - Verify side effects trigger correctly\n7. tests/test_validation.py - Test all validation rules\n8. tests/test_performance.py - Measure response times with state\n\nInclude:\n- Setup and teardown for clean state\n- Helper methods for common operations\n- Assertions for state consistency\n- Tests for error conditions\n- Integration tests across multiple endpoints\n\nUse pytest fixtures for state management:\n```python\n@pytest.fixture\ndef clean_state():\n    # Reset database\n    # Clear cache\n    # Return fresh state manager\n```",
+      "dependencies": [
+        "task_7",
+        "task_8",
+        "task_9",
+        "task_10",
+        "task_11",
+        "task_12"
+      ],
+      "context": {
+        "endpoints": [
+          "GET /users",
+          "POST /users",
+          "GET /users/{userId}",
+          "DELETE /users/{userId}",
+          "GET /users/{userId}/documents",
+          "POST /documents"
+        ],
+        "scenarios": true
+      },
+      "status": "TaskStatus.COMPLETED",
+      "result": "Test mode: Successfully processed prompt for Create",
+      "error": null,
+      "attempts": 1,
+      "max_attempts": 3
+    }
+  ]
+}
