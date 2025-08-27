@@ -1,21 +1,20 @@
 [project]
 name = "api-mock-generator-agent"
 version = "0.1.0"
-description = "Automated Mock API Generator with Stateful Object Management"
+description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.13"
 dependencies = [
+    "faker>=20.0.0",
+    "flask>=2.3.0",
+    "flask-cors>=4.0.0",
+    "flask-jwt-extended>=4.5.0",
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.20.0",
+    "pytest-cov>=4.0.0",
+    "pytest-mock>=3.10.0",
+    "pyyaml>=6.0.2",
+    "requests>=2.32.5",
     "ruff>=0.12.10",
-    "PyYAML>=6.0"
+    "sqlalchemy>=2.0.0",
 ]
-
-[project.scripts]
-api-mock-generator = "main:main"
-
-[tool.ruff]
-line-length = 100
-target-version = "py311"
-
-[tool.ruff.lint]
-select = ["E", "F", "W", "B"]
-ignore = ["E501", "F401"]
