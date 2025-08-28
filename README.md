@@ -14,6 +14,10 @@ The `main.py` script analyzes OpenAPI specifications and generates:
 ## Usage
 
 ```bash
+# Using uv
+uv run main.py path/to/openapi.yaml output-directory
+
+# OR using python
 python main.py path/to/openapi.yaml output-directory
 ```
 
@@ -64,17 +68,30 @@ output-directory/
 
 ## Quick Start
 
+**IMPORTANT**: This repository already contains generated output. You can directly run the server:
+
 ```bash
-# Clone and setup
-git clone <repo-url>
+# Run the pre-generated server (from repository root)
+uv run output-dir/server/run.py
+# OR
+python output-dir/server/run.py
+```
+
+To generate new output (will overwrite existing):
+
+```bash
+# Install dependencies (if using pip)
 pip install -r requirements.txt
 
-# Generate mock API
+# Generate new mock API (regenerates everything)
+uv run main.py your-api-spec.yaml output-dir
+# OR
 python main.py your-api-spec.yaml output-dir
 
-# Start the server
-cd output-dir
-python server/run.py
+# Start the newly generated server
+uv run output-dir/server/run.py
+# OR
+python output-dir/server/run.py
 ```
 
 The generated mock API runs on http://localhost:5000 with full CRUD functionality.
